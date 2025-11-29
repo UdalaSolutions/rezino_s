@@ -10,7 +10,6 @@ import { getCategoryBySlug, getVideoById } from '@/app/utils';
 export default function VideoPage({ params }) {
 	const [showModal, setShowModal] = useState(false);
 
-	// Unwrap the params Promise using React.use()
 	const { category: categorySlug, id: vimeoId } = use(params);
 	const category = getCategoryBySlug(categorySlug);
 

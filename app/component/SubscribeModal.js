@@ -1,44 +1,92 @@
 'use client';
 
-import { X } from 'lucide-react';
+import { useState } from 'react';
+import PlansStep from './PlanStep';
+import PaymentStep from './PaymentStep';
+import ProcessingStep from './ProcessingStep';
+import SuccessStep from './SuccessStep';
 
-export default function SubscribeModal({ isOpen, onClose }) {
+const SubscriptionModal = ({ isOpen, onClose, lockedVideoTitle, video }) => {
+	const [step, setStep] = useState('plans');
+	const [selectedPlan, setSelectedPlan] = useState(null);
+	const [phoneNumber, setPhoneNumber] = useState('');
+	const [error, setError] = useState('');
+
 	if (!isOpen) return null;
 
+	const handlePlanSelect = (plan) => {
+		setSelectedPlan(plan);
+		setStep('payment');
+	};
+
+	const handlePayment = (e) => {
+		e.preventDefault();
+		setError('');
+
+		// Validate phone number (MTN format)
+		if (!phoneNumber.match(/^0[789][01]\d{8}$/)) {
+			setError('Please enter a valid MTN phone number');
+			return;
+		}
+
+		setStep('processing');
+
+		// Simulate API call
+		setTimeout(() => {
+			const success = Math.random() > 0.3; // 70% success for demo
+			if (success) {
+				setStep('success');
+			} else {
+				setError(
+					'Payment failed. Please try again or check your account balance.'
+				);
+				setStep('payment');
+			}
+		}, 3000);
+	};
+
+	const resetModal = () => {
+		setStep('plans');
+		setSelectedPlan(null);
+		setPhoneNumber('');
+		setError('');
+		onClose();
+	};
+
 	return (
-		<div className='fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4'>
-			<div className='bg-gray-900 rounded-2xl max-w-md w-full p-8 relative border border-gray-800'>
-				<button
-					onClick={onClose}
-					className='absolute top-4 right-4 text-gray-400 hover:text-white transition-colors'>
-					<X className='w-6 h-6' />
-				</button>
+		<div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fadeIn'>
+			<div className='bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl animate-slideUp'>
+				{step === 'plans' && (
+					<PlansStep
+						onClose={onClose}
+						onSelectPlan={handlePlanSelect}
+						lockedVideoTitle={lockedVideoTitle}
+					/>
+				)}
 
-				<div className='text-center'>
-					<div className='w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4'>
-						<svg
-							className='w-8 h-8 text-white'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'>
-							<path
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2}
-								d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
-							/>
-						</svg>
-					</div>
+				{step === 'payment' && (
+					<PaymentStep
+						plan={selectedPlan}
+						phoneNumber={phoneNumber}
+						setPhoneNumber={setPhoneNumber}
+						onBack={() => setStep('plans')}
+						onSubmit={handlePayment}
+						error={error}
+					/>
+				)}
 
-					<h2 className='text-2xl font-bold text-white mb-2'>
-						Subscribe to View
-					</h2>
-					<p className='text-gray-400 mb-6'>
-						Get unlimited access to all RezinoS skincare videos and expert
-						dermatologist advice.
-					</p>
-				</div>
+				{step === 'processing' && <ProcessingStep plan={selectedPlan} />}
+
+				{step === 'success' && (
+					<SuccessStep
+						plan={selectedPlan}
+						onClose={resetModal}
+						video={video}
+					/>
+				)}
 			</div>
 		</div>
 	);
-}
+};
+
+export default SubscriptionModal;

@@ -1,16 +1,29 @@
 'use client';
 
-import { Icon } from '@iconify/react';
-import Link from 'next/link';
-import { ArrowLeft, Play, Clock, Eye } from 'lucide-react';
 import { use } from 'react';
+import { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { ArrowLeft, Play, Clock, Eye } from 'lucide-react';
+import Link from 'next/link';
 import { getCategoryBySlug, categoryBackgrounds } from '@/app/utils';
+import SubscriptionModal from '@/app/component/SubscribeModal';
 
-export default function CategoryPage({ params }) {
-	const { category: categorySlug } = use(params);
+export default function CategoryPage({ params: paramsPromise }) {
+	// Unwrap params
+	const params = use(paramsPromise);
+	const categorySlug = params.category;
+
 	const category = getCategoryBySlug(categorySlug);
 	const backgroundImage =
 		categoryBackgrounds[categorySlug] || categoryBackgrounds.acne;
+
+	const [showModal, setShowModal] = useState(false);
+	const [selectedVideo, setSelectedVideo] = useState(null);
+
+	const handleVideoClick = (video) => {
+		setSelectedVideo({ ...video, categorySlug });
+		setShowModal(true);
+	};
 
 	return (
 		<div className='min-h-screen bg-gray-50'>
@@ -85,10 +98,10 @@ export default function CategoryPage({ params }) {
 					{category.videos.map((video) => {
 						const thumbnailUrl = `https://vumbnail.com/${video.vimeoId}.jpg`;
 						return (
-							<Link
+							<div
 								key={video.id}
-								href={`/video/${categorySlug}/${video.vimeoId}`}
-								className='group'>
+								className='group cursor-pointer'
+								onClick={() => handleVideoClick(video)}>
 								<div className='bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-pink-400 hover:shadow-2xl transition-all duration-300'>
 									{/* Video Thumbnail */}
 									<div
@@ -103,6 +116,7 @@ export default function CategoryPage({ params }) {
 												/>
 											</div>
 										</div>
+
 										{/* Duration */}
 										<div className='absolute bottom-3 right-3 bg-gray-900/90 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 font-medium'>
 											<Clock className='w-3 h-3' />
@@ -126,7 +140,7 @@ export default function CategoryPage({ params }) {
 										</div>
 									</div>
 								</div>
-							</Link>
+							</div>
 						);
 					})}
 				</div>
@@ -147,10 +161,18 @@ export default function CategoryPage({ params }) {
 				)}
 			</main>
 
+			{/* Subscription Modal */}
+			<SubscriptionModal
+				isOpen={showModal}
+				onClose={() => setShowModal(false)}
+				lockedVideoTitle={selectedVideo?.title}
+				video={selectedVideo}
+			/>
+
 			{/* Footer */}
 			<footer className='bg-white border-t border-gray-200 mt-16'>
 				<div className='max-w-screen-2xl mx-auto px-6 py-8 text-center text-gray-600 text-sm'>
-					<p>© 2024 RezinoS Skincare. All rights reserved.</p>
+					<p>© 2025 RezinoS Skincare. All rights reserved.</p>
 				</div>
 			</footer>
 		</div>

@@ -145,6 +145,51 @@ export const categoryBackgrounds = {
 		'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=1920&q=80',
 };
 
+export const SUBSCRIPTION_PLANS = [
+	{
+		id: 'daily',
+		name: 'Daily Pass',
+		price: '₦50',
+		duration: '24 hours',
+		features: ['Access all videos', 'HD quality', 'No ads', '24/7 support'],
+		popular: false,
+		color: 'from-pink-500 to-rose-500',
+	},
+	{
+		id: 'weekly',
+		name: 'Weekly Pass',
+		price: '₦200',
+		duration: '7 days',
+		features: [
+			'Access all videos',
+			'HD quality',
+			'No ads',
+			'24/7 support',
+			'Early access to new content',
+		],
+		popular: true,
+		color: 'from-purple-500 to-pink-500',
+		savings: 'Save 43%',
+	},
+	{
+		id: 'monthly',
+		name: 'Monthly Pass',
+		price: '₦500',
+		duration: '30 days',
+		features: [
+			'Access all videos',
+			'HD quality',
+			'No ads',
+			'24/7 support',
+			'Early access to new content',
+			'Exclusive masterclasses',
+		],
+		popular: false,
+		color: 'from-indigo-500 to-purple-500',
+		savings: 'Save 67%',
+	},
+];
+
 // Helper function to get all categories
 export const getAllCategories = () => {
 	return Object.keys(videoData.categories).map((key) => ({
