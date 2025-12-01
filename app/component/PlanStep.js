@@ -34,7 +34,7 @@ const PlansStep = ({ onClose, onSelectPlan, lockedVideoTitle }) => {
 			</div>
 
 			{/* Plans Grid */}
-			<div className='p-6 overflow-y-auto max-h-[calc(90vh-180px)]'>
+			<div className='p-6 overflow-y-auto max-h-[calc(90vh-190px)]'>
 				<div className='grid md:grid-cols-3 gap-4 mb-6'>
 					{SUBSCRIPTION_PLANS.map((plan) => (
 						<PlanCard
@@ -62,7 +62,7 @@ const PlansStep = ({ onClose, onSelectPlan, lockedVideoTitle }) => {
 						/>
 						<BenefitItem
 							icon={Shield}
-							text='Secure MTN payment gateway'
+							text='Secure payment gateway'
 						/>
 						<BenefitItem
 							icon={Phone}
@@ -72,9 +72,9 @@ const PlansStep = ({ onClose, onSelectPlan, lockedVideoTitle }) => {
 				</div>
 
 				{/* Payment Method Info */}
-				<div className='mt-6 text-center text-sm text-gray-500'>
+				{/* <div className='mt-6 text-center text-sm text-gray-500'>
 					<p>Payments powered by MTN Mobile Money</p>
-				</div>
+				</div> */}
 			</div>
 		</>
 	);

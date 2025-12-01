@@ -12,7 +12,7 @@ const ProcessingStep = ({ plan }) => {
 			</h2>
 
 			<p className='text-gray-600 mb-6 max-w-md mx-auto'>
-				Please check your phone for the MTN payment prompt and authorize the
+				Please check your phone for the payment prompt and authorize the
 				transaction.
 			</p>
 

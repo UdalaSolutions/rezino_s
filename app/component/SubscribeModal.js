@@ -25,7 +25,7 @@ const SubscriptionModal = ({ isOpen, onClose, lockedVideoTitle, video }) => {
 
 		// Validate phone number (MTN format)
 		if (!phoneNumber.match(/^0[789][01]\d{8}$/)) {
-			setError('Please enter a valid MTN phone number');
+			setError('Please enter a valid phone number');
 			return;
 		}
 
